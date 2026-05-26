@@ -1,0 +1,53 @@
+---
+description: When and how to resolve, format, export, and verify academic citations with Scholar Sidekick (MCP server + REST fallback).
+alwaysApply: false
+---
+
+# Scholar Sidekick — citations, retraction, open-access, fabrication-checking
+
+Scholar Sidekick turns a scholarly **identifier** into clean citations and integrity
+checks. Reach for it whenever the user mentions a DOI, PMID, PMCID, ISBN, ISSN, arXiv ID,
+ADS bibcode, or WHO IRIS URL, or asks to format/export references, or asks whether a paper
+is retracted, open access, or a real (non-fabricated) citation.
+
+It does **not** search for papers by topic — it assumes you already have an identifier.
+
+## Two paths (this plugin bundles both)
+
+- **MCP server (preferred when connected)** — the bundled `scholar-sidekick` server exposes
+  native tools. Requires a `RAPIDAPI_KEY` in the environment (free tier available at
+  https://rapidapi.com/scholar-sidekick-scholar-sidekick-api/api/scholar-sidekick).
+- **REST API (keyless fallback)** — `https://scholar-sidekick.com/api/*` works anonymously
+  over `curl`, no key, at a free rate-limited tier. Use this if the MCP server isn't
+  connected. See the `scholar-sidekick-api` skill for the full REST recipe.
+
+Never scrape the website UI — call the JSON API (or MCP tools).
+
+## Pick the right tool
+
+| The user wants… | Tool (MCP) | REST endpoint |
+|---|---|---|
+| Structured metadata for an identifier | `resolveIdentifier` | `POST /api/format` (`output: json`) |
+| A formatted citation (Vancouver/APA/IEEE/CSE/AMA or any CSL style) | `formatCitation` | `POST /api/format` |
+| A bibliography file (BibTeX, RIS, EndNote XML, RefWorks, NBIB, RDF, CSV, CSL-JSON) | `exportCitation` | `POST /api/export` |
+| "Has this been retracted / corrected?" | `checkRetraction` | `POST /api/retraction-check` |
+| "Is there a free / open-access copy?" | `checkOpenAccess` | `POST /api/oa-check` |
+| "Is this citation real / did you make it up?" | `verifyCitation` | `POST /api/verify` |
+
+**Critical:** for "is this citation real?", use **`verifyCitation`**, *not* `resolveIdentifier`.
+A plain resolve returns whatever the registry holds for the identifier and so misses the
+dominant fabrication pattern — a real, resolvable DOI paired with an invented title (Topaz
+et al., Lancet 2026). Only `verifyCitation` compares the *claimed* citation against reality
+and returns a verdict (`matched` / `mismatch` / `ambiguous` / `not_found`).
+
+## Rules of engagement
+
+- Pass identifiers **verbatim** — don't strip `PMID:`, `arXiv:`, ISBN hyphens, or
+  `https://doi.org/…` prefixes; detection is automatic.
+- `formatCitation` / `exportCitation` accept several newline-separated identifiers (batch).
+  `checkRetraction` / `checkOpenAccess` / `verifyCitation` take **one** identifier per call.
+- Books / ISBNs have no DOI, so retraction and open-access checks return a "no DOI" result.
+- **Never fabricate a fallback.** If a call fails or returns `ok: false`, report that — do
+  not invent a citation, a retraction status, an OA verdict, or a "matched" verdict.
+
+Full agent guide: https://scholar-sidekick.com/AGENTS.md · index: https://scholar-sidekick.com/llms.txt

@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "scholar-sidekick": {
+      "command": "npx",
+      "args": ["-y", "scholar-sidekick-mcp@latest"],
+      "env": {
+        "RAPIDAPI_KEY": "${RAPIDAPI_KEY}"
+      }
+    }
+  }
+}
