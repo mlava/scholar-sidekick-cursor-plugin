@@ -33,6 +33,7 @@ Never scrape the website UI — call the JSON API (or MCP tools).
 | "Has this been retracted / corrected?" | `checkRetraction` | `POST /api/retraction-check` |
 | "Is there a free / open-access copy?" | `checkOpenAccess` | `POST /api/oa-check` |
 | "Is this citation real / did you make it up?" | `verifyCitation` | `POST /api/verify` |
+| Audit a whole bibliography / .bib / .ris file at once | `auditBibliography` | `POST /api/audit` |
 
 **Critical:** for "is this citation real?", use **`verifyCitation`**, *not* `resolveIdentifier`.
 A plain resolve returns whatever the registry holds for the identifier and so misses the
@@ -45,7 +46,8 @@ and returns a verdict (`matched` / `mismatch` / `ambiguous` / `not_found`).
 - Pass identifiers **verbatim** — don't strip `PMID:`, `arXiv:`, ISBN hyphens, or
   `https://doi.org/…` prefixes; detection is automatic.
 - `formatCitation` / `exportCitation` accept several newline-separated identifiers (batch).
-  `checkRetraction` / `checkOpenAccess` / `verifyCitation` take **one** identifier per call.
+  `checkRetraction` / `checkOpenAccess` / `verifyCitation` take **one** identifier per call;
+  to check a whole reference list in one call, use `auditBibliography` (max 25 entries).
 - Books / ISBNs have no DOI, so retraction and open-access checks return a "no DOI" result.
 - **Never fabricate a fallback.** If a call fails or returns `ok: false`, report that — do
   not invent a citation, a retraction status, an OA verdict, or a "matched" verdict.

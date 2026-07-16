@@ -58,6 +58,7 @@ Base URL: `https://scholar-sidekick.com`
 | Retraction / correction / EoC check | `POST /api/retraction-check` | `{id}` |
 | Open-access status + best legal URL | `POST /api/oa-check` | `{id}` |
 | Verify a claimed citation (fabrication) | `POST /api/verify` | `{claimed: {title, doi}}` |
+| Audit a whole bibliography (batch verify + retraction) | `POST /api/audit` | `{bibliography: "…"}` or `{claims: […]}` |
 | Service health | `GET /api/health` | — |
 
 ## Procedure
@@ -119,6 +120,22 @@ Citation fields go inside a **`claimed`** object: `title` (required) plus an ide
 - `not_found` — neither identifier nor title resolves anywhere.
 
 Use this for "is this citation real?", not a plain format/resolve.
+
+### Audit a whole bibliography (batch fabrication + retraction check)
+```bash
+curl -sS -X POST "https://scholar-sidekick.com/api/audit" \
+  -H "Content-Type: application/json" \
+  -d '{"bibliography":"@article{a, title={A real title}, doi={10.1038/nphys1170}}\n@article{b, title={An invented title}, doi={10.1016/j.neuroscience.2023.02.008}}"}'
+```
+The batch counterpart to `/api/verify`. Send EITHER `bibliography` (raw BibTeX / RIS /
+CSL-JSON text; format auto-detected, override with `format`) OR `claims` (array of
+`{title + one identifier}` objects) — not both. Optional `options.checks` defaults to
+`["retraction"]` (pass `[]` to skip). Max 25 entries per call (excess reported via
+`truncated`). Returns `{ ok, format, entries[], parseErrors[], truncated, summary }` where
+each entry carries `verdict` / `confidence` / `retraction` and
+`summary = { total, matched, mismatch, ambiguous, not_found, errored, retracted }`.
+One bad entry becomes `status: "error"` without failing the batch. This audits citation
+identity — it does not check whether a source supports the claim it is cited for.
 
 ## Pitfalls
 - Never scrape the web UI — the JSON API is faster and stable.

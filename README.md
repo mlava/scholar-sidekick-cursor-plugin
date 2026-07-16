@@ -11,8 +11,8 @@ REST API, the MCP server, and the Obsidian plugin.
 
 | Component | What it gives you |
 |---|---|
-| **MCP server** (`mcp.json`) | The `scholar-sidekick` server with six native tools: `resolveIdentifier`, `formatCitation`, `exportCitation`, `checkRetraction`, `checkOpenAccess`, `verifyCitation`. |
-| **7 skills** (`skills/`) | Per-capability guidance so the agent knows *when* and *how* to use each tool — including a keyless `scholar-sidekick-api` REST skill that works with no API key. |
+| **MCP server** (`mcp.json`) | The `scholar-sidekick` server with seven native tools: `resolveIdentifier`, `formatCitation`, `exportCitation`, `checkRetraction`, `checkOpenAccess`, `verifyCitation`, `auditBibliography`. |
+| **8 skills** (`skills/`) | Per-capability guidance so the agent knows *when* and *how* to use each tool — including a keyless `scholar-sidekick-api` REST skill that works with no API key. |
 | **1 rule** (`rules/scholar-sidekick.mdc`) | On-demand tool-selection guidance: which tool for which question, and the rule that "is this citation real?" needs `verifyCitation`, not a plain resolve. |
 
 ## Install
@@ -56,6 +56,7 @@ Once installed, ask Cursor's agent things like:
 - *Format `10.1056/NEJMoa2033700` in Vancouver style.*
 - *Resolve `PMID:30049270` and export it as BibTeX.*
 - *Is this citation real? "A Unified Theory of Everything", `10.1038/nphys1170`.*
+- *Audit every reference in `refs.bib` — which are fake or retracted?*
 - *Has `10.1016/S0140-6736(97)11096-0` been retracted?*
 - *Is there a free open-access copy of `10.1371/journal.pone.0173664`?*
 
