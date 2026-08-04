@@ -40,13 +40,19 @@ The site is built for agents. The contract lives at:
 Always call the JSON REST API below. Do not drive the website form.
 
 ## Authentication & limits
-Calls to `scholar-sidekick.com/api/*` work **anonymously — there is no first-party API
-key** — at a rate-limited free tier (~40 format / 10 export requests per window), which
-is plenty for normal, human-driven agent use. For higher limits, Scholar Sidekick is
-offered on RapidAPI: subscribe at
-https://rapidapi.com/scholar-sidekick-scholar-sidekick-api/api/scholar-sidekick and call
-it through the RapidAPI gateway with your `X-RapidAPI-Key`. Use the anonymous
-`scholar-sidekick.com` endpoints by default; move to RapidAPI only for volume.
+Calls to `scholar-sidekick.com/api/*` work **anonymously — no key required** — at a
+rate-limited free tier (~40 format / 10 export requests per window), which is plenty for
+normal, human-driven agent use. Use the anonymous endpoints by default.
+
+Two optional routes raise the limits; they are alternatives, not layers:
+- A free **first-party key** (`ssk_…`) from https://scholar-sidekick.com/account, sent as
+  `Authorization: Bearer ssk_…` against `scholar-sidekick.com`.
+- A **RapidAPI** subscription for paid/managed volume: subscribe at
+  https://rapidapi.com/scholar-sidekick-scholar-sidekick-api/api/scholar-sidekick and call
+  the RapidAPI gateway with your `X-RapidAPI-Key`.
+
+Never ask the user for a key just to make a call work — anonymous is the default and is
+sufficient. Only mention a key if they hit a rate limit.
 
 ## Quick Reference
 Base URL: `https://scholar-sidekick.com`
@@ -150,8 +156,9 @@ identity — it does not check whether a source supports the claim it is cited f
 
 ## Optional: bundled MCP server (power users)
 This plugin also ships the `scholar-sidekick` MCP server (tools: `resolveIdentifier`,
-`formatCitation`, `exportCitation`, `checkRetraction`, `checkOpenAccess`, `verifyCitation`).
-That path requires a RapidAPI key, so the REST calls above are the zero-setup default:
+`formatCitation`, `exportCitation`, `checkRetraction`, `checkOpenAccess`, `verifyCitation`,
+`auditBibliography`). It runs anonymously too — prefer it when it's connected, since native
+tool calls beat `curl`:
 ```bash
-npx -y scholar-sidekick-mcp@latest   # needs RAPIDAPI_KEY in env
+npx -y scholar-sidekick-mcp@latest   # anonymous; no key needed
 ```

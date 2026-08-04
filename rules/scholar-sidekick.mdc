@@ -15,11 +15,14 @@ It does **not** search for papers by topic — it assumes you already have an id
 ## Two paths (this plugin bundles both)
 
 - **MCP server (preferred when connected)** — the bundled `scholar-sidekick` server exposes
-  native tools. Requires a `RAPIDAPI_KEY` in the environment (free tier available at
-  https://rapidapi.com/scholar-sidekick-scholar-sidekick-api/api/scholar-sidekick).
+  native tools. Runs anonymously at a rate-limited free tier; **no key required**.
 - **REST API (keyless fallback)** — `https://scholar-sidekick.com/api/*` works anonymously
   over `curl`, no key, at a free rate-limited tier. Use this if the MCP server isn't
   connected. See the `scholar-sidekick-api` skill for the full REST recipe.
+
+Both paths are anonymous by default. **Never ask the user for an API key** to make a call
+work. A free first-party `ssk_` key (https://scholar-sidekick.com/account) only raises rate
+limits — mention it if and only if they actually hit one.
 
 Never scrape the website UI — call the JSON API (or MCP tools).
 

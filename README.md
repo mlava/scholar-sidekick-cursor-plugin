@@ -24,30 +24,31 @@ Sidekick"), or test locally by symlinking this repo into Cursor's local plugins 
 ln -s "$(pwd)" ~/.cursor/plugins/local/scholar-sidekick
 ```
 
-## Two ways to run — pick based on whether you have a key
+## Two ways to run — both work with no key
 
-- **MCP server (preferred):** native tool calls. Requires a `RAPIDAPI_KEY` in your
-  environment. The `mcp.json` reads it via `${RAPIDAPI_KEY}`:
+- **MCP server (preferred):** native tool calls. Runs anonymously on a rate-limited free
+  tier; there is nothing to set up. The bundled `mcp.json`:
 
   ```json
   {
     "mcpServers": {
       "scholar-sidekick": {
         "command": "npx",
-        "args": ["-y", "scholar-sidekick-mcp@latest"],
-        "env": { "RAPIDAPI_KEY": "${RAPIDAPI_KEY}" }
+        "args": ["-y", "scholar-sidekick-mcp@latest"]
       }
     }
   }
   ```
 
-  Get a free-tier key at
-  [rapidapi.com/scholar-sidekick…](https://rapidapi.com/scholar-sidekick-scholar-sidekick-api/api/scholar-sidekick),
-  then set `RAPIDAPI_KEY` in your shell or Cursor environment.
+  To raise your rate limits, add an `env` block setting `SCHOLAR_API_KEY` to a free
+  first-party `ssk_` key from [scholar-sidekick.com/account](https://scholar-sidekick.com/account).
+  `RAPIDAPI_KEY` is a separate route for paid/managed tiers — set one or the other, never
+  both, and do not set either to an unexpanded `${…}` placeholder (that routes calls to the
+  RapidAPI gateway with an invalid key and every request fails with 403).
 
-- **Keyless REST (no setup):** if you don't have a key, the bundled `scholar-sidekick-api`
-  skill drives the public REST API at `https://scholar-sidekick.com/api/*` over `curl` —
-  anonymous, free, rate-limited. No install, no key.
+- **Keyless REST (no install):** the bundled `scholar-sidekick-api` skill drives the public
+  REST API at `https://scholar-sidekick.com/api/*` over `curl` — anonymous, free,
+  rate-limited. Useful when you'd rather not run a local process at all.
 
 ## Try it
 
