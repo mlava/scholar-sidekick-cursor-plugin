@@ -17,12 +17,17 @@ REST API, the MCP server, and the Obsidian plugin.
 
 ## Install
 
-Install from the [Cursor Marketplace](https://cursor.com/marketplace) (search "Scholar
-Sidekick"), or test locally by symlinking this repo into Cursor's local plugins dir:
+Install from the [Cursor Directory listing](https://cursor.directory/plugins/scholar-sidekick).
+
+To run it from a local checkout instead:
 
 ```bash
-ln -s "$(pwd)" ~/.cursor/plugins/local/scholar-sidekick
+./scripts/sync-local.sh   # then: Cmd+Shift+P → "Developer: Reload Window"
 ```
+
+> Use the script rather than a symlink. Cursor 3.5.x refuses to load a local plugin whose
+> symlink target lives outside `~/.cursor/plugins/local`, so the script copies the
+> directory instead.
 
 ## Two ways to run — both work with no key
 
@@ -60,6 +65,12 @@ Once installed, ask Cursor's agent things like:
 - *Audit every reference in `refs.bib` — which are fake or retracted?*
 - *Has `10.1016/S0140-6736(97)11096-0` been retracted?*
 - *Is there a free open-access copy of `10.1371/journal.pone.0173664`?*
+
+## Releasing
+
+See [RELEASE.md](RELEASE.md). Note that publishing is **not** just `git push`: the Cursor
+Directory listing is human-maintained and keeps its own copy of the description, so it must
+be re-synced and re-read by hand or it silently serves the previous text.
 
 ## Links
 
