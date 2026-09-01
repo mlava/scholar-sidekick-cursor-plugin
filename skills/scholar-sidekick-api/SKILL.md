@@ -1,6 +1,6 @@
 ---
 name: scholar-sidekick-api
-description: Resolve scholarly identifiers (DOI, PMID, PMCID, ISBN, arXiv, ISSN, ADS bibcode, WHO IRIS URL) into formatted citations (10,000+ CSL styles) and bibliography exports (BibTeX, RIS, EndNote, CSV…), and check retraction, open-access, and citation-fabrication status. Calls a documented REST API over plain HTTP — no install, no API key needed for the free tier.
+description: Resolve scholarly identifiers (DOI including shortDOI aliases, PMID, PMCID, ISBN, arXiv, ISSN, ADS bibcode, WHO IRIS URL) into formatted citations (10,000+ CSL styles) and bibliography exports (BibTeX, RIS, EndNote, CSV…), and check retraction, open-access, and citation-fabrication status. Calls a documented REST API over plain HTTP — no install, no API key needed for the free tier.
 version: 1.0.0
 author: Scholar Sidekick
 license: MIT
@@ -26,7 +26,7 @@ RapidAPI key only raises rate limits.
 > agent that can run `curl`, and needs no `RAPIDAPI_KEY`.
 
 ## When to Use
-- The user has an identifier (DOI, PMID, PMCID, ISBN, arXiv, ISSN, ADS bibcode, WHO IRIS URL) and wants metadata, a formatted citation, or a bibliography file.
+- The user has an identifier (DOI, PMID, PMCID, ISBN, arXiv, ISSN, ADS bibcode, WHO IRIS URL; shortDOI aliases like `10/aabbe` accepted) and wants metadata, a formatted citation, or a bibliography file.
 - "Cite this in APA/Vancouver/Chicago…", "give me a BibTeX/RIS file", "export these refs".
 - "Has this been retracted?", "is this open access?", "is this citation real / did you make it up?"
 - Do NOT use to *search* for papers by topic — that's discovery. This assumes you already have an identifier.
@@ -75,7 +75,7 @@ curl -sS -X POST "https://scholar-sidekick.com/api/format" \
   -H "Content-Type: application/json" \
   -d '{"text": "10.1038/nphys1170", "style": "vancouver", "output": "text"}'
 ```
-- `text`: one identifier, or several newline-separated for a batch. Pass verbatim — `PMID:`, `arXiv:`, ISBN hyphens, and `https://doi.org/…` are all tolerated.
+- `text`: one identifier, or several newline-separated for a batch. Pass verbatim — `PMID:`, `arXiv:`, ISBN hyphens, and `https://doi.org/…` are all tolerated. A shortDOI alias (`10/aabbe`, from shortdoi.org) is accepted anywhere a DOI is, and expanded to the full DOI before resolving.
 - `style`: `vancouver` (default), `ama`, `apa`, `ieee`, `cse`, or any CSL style ID (`chicago-author-date`, `harvard-cite-them-right`, `modern-language-association`, `nature`, `bmj`, `the-lancet`, …).
 - `output`: `text` or `json`.
 Response: `{ "ok": true, "items": [{ "formatted": "…" }], "text": "…" }`.

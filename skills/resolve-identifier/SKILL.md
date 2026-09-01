@@ -1,6 +1,6 @@
 ---
 name: resolve-identifier
-description: Resolve a scholarly identifier (DOI/PMID/PMCID/ISBN/ISSN/arXiv/ADS/WHO IRIS) to structured CSL JSON metadata.
+description: Resolve a scholarly identifier (DOI incl. shortDOI aliases/PMID/PMCID/ISBN/ISSN/arXiv/ADS/WHO IRIS) to structured CSL JSON metadata.
 ---
 
 # resolveIdentifier
@@ -9,12 +9,12 @@ Resolves a single bibliographic identifier to canonical CSL JSON metadata via th
 
 ## When to use
 
-- The user provides a single DOI, PMID, PMCID, ISBN, ISSN, arXiv ID, ADS bibcode, or WHO IRIS URL and wants the underlying metadata.
+- The user provides a single DOI (including a shortDOI alias like `10/aabbe`), PMID, PMCID, ISBN, ISSN, arXiv ID, ADS bibcode, or WHO IRIS URL and wants the underlying metadata.
 - An agent needs structured fields (author list, title, container, year, identifiers) before formatting or exporting.
 
 ## Inputs
 
-- `identifier` (string, required) — DOI like `10.1038/nphys1170`, PMID like `34812345`, ISBN, etc. Detection is automatic.
+- `identifier` (string, required) — DOI like `10.1038/nphys1170`, PMID like `34812345`, ISBN, etc. Detection is automatic. A shortDOI alias (`10/aabbe`, from shortdoi.org) is accepted anywhere a DOI is, and expanded to the full DOI before resolving.
 
 ## Outputs
 

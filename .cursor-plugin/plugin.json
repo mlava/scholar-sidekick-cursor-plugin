@@ -1,7 +1,7 @@
 {
   "name": "scholar-sidekick",
-  "description": "Resolve, format, export, and verify academic citations (DOI, PMID, PMCID, ISBN, ISSN, arXiv, ADS, WHO IRIS) — plus retraction and open-access checks.",
-  "version": "1.0.1",
+  "description": "Resolve, format, export, and verify academic citations (DOI incl. shortDOI aliases, PMID, PMCID, ISBN, ISSN, arXiv, ADS, WHO IRIS) — plus retraction and open-access checks.",
+  "version": "1.0.2",
   "author": {
     "name": "Scholar Sidekick",
     "email": "support@scholar-sidekick.com"

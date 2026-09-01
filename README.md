@@ -1,8 +1,9 @@
 # Scholar Sidekick — Cursor Plugin
 
 Resolve, format, export, and **verify** academic citations directly inside Cursor —
-plus retraction and open-access checks. Works from a scholarly identifier: DOI, PMID,
-PMCID, ISBN, ISSN, arXiv ID, ADS bibcode, or WHO IRIS URL.
+plus retraction and open-access checks. Works from a scholarly identifier: DOI
+(including shortDOI aliases like `10/aabbe`), PMID, PMCID, ISBN, ISSN, arXiv ID,
+ADS bibcode, or WHO IRIS URL.
 
 Backed by [Scholar Sidekick](https://scholar-sidekick.com) — the same engine behind the
 REST API, the MCP server, and the Obsidian plugin.

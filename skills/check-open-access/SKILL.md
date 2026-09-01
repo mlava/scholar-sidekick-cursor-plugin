@@ -15,7 +15,7 @@ Resolves an identifier to a DOI, then looks up its open-access status via Unpayw
 
 ## Inputs
 
-- `id` (string, required) — one identifier per call: DOI, PMID, PMCID, arXiv ID, ISBN, or ADS bibcode. Pass it verbatim. Items with no DOI return a "no DOI" result.
+- `id` (string, required) — one identifier per call: DOI (including shortDOI aliases like `10/aabbe`), PMID, PMCID, arXiv ID, ISBN, or ADS bibcode. Pass it verbatim. Items with no DOI return a "no DOI" result.
 
 ## Outputs
 

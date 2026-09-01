@@ -15,7 +15,7 @@ Looks up the live retraction status of an identifier against Crossref's update r
 
 ## Inputs
 
-- `id` (string, required) — one identifier per call: DOI, PMID, PMCID, arXiv ID, or ADS bibcode. Pass it verbatim (`PMID:` and similar prefixes are tolerated). Books/ISBNs have no DOI, so they return a "no DOI" result.
+- `id` (string, required) — one identifier per call: DOI (including shortDOI aliases like `10/aabbe`), PMID, PMCID, arXiv ID, or ADS bibcode. Pass it verbatim (`PMID:` and similar prefixes are tolerated). Books/ISBNs have no DOI, so they return a "no DOI" result.
 
 ## Outputs
 

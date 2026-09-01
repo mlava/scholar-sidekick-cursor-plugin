@@ -6,8 +6,8 @@ alwaysApply: false
 # Scholar Sidekick — citations, retraction, open-access, fabrication-checking
 
 Scholar Sidekick turns a scholarly **identifier** into clean citations and integrity
-checks. Reach for it whenever the user mentions a DOI, PMID, PMCID, ISBN, ISSN, arXiv ID,
-ADS bibcode, or WHO IRIS URL, or asks to format/export references, or asks whether a paper
+checks. Reach for it whenever the user mentions a DOI (including a shortDOI alias like
+`10/aabbe`), PMID, PMCID, ISBN, ISSN, arXiv ID, ADS bibcode, or WHO IRIS URL, or asks to format/export references, or asks whether a paper
 is retracted, open access, or a real (non-fabricated) citation.
 
 It does **not** search for papers by topic — it assumes you already have an identifier.
@@ -48,6 +48,8 @@ and returns a verdict (`matched` / `mismatch` / `ambiguous` / `not_found`).
 
 - Pass identifiers **verbatim** — don't strip `PMID:`, `arXiv:`, ISBN hyphens, or
   `https://doi.org/…` prefixes; detection is automatic.
+  A shortDOI alias (`10/aabbe`, from shortdoi.org) works anywhere a DOI does and is
+  expanded to the full DOI before resolving.
 - `formatCitation` / `exportCitation` accept several newline-separated identifiers (batch).
   `checkRetraction` / `checkOpenAccess` / `verifyCitation` take **one** identifier per call;
   to check a whole reference list in one call, use `auditBibliography` (max 25 entries).
