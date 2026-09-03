@@ -24,13 +24,17 @@ fi
 mkdir -p "$DEST"
 
 # Seed mcp.json on first run only. We never overwrite an existing local mcp.json,
-# because you may have put a real RAPIDAPI_KEY in it for testing — the repo's copy
-# only carries the ${RAPIDAPI_KEY} placeholder, which would break the MCP server.
+# because you may have edited it for testing (a real key, or an absolute node path)
+# and rsync would clobber that on every sync.
+#
+# The repo's copy needs no key: the MCP server runs anonymously on a rate-limited
+# free tier. If an old local copy still carries an "env" block with a ${RAPIDAPI_KEY}
+# placeholder, delete the file and re-run this script — an unexpanded placeholder is
+# not empty, so the server reads it as a real key and 403s every call.
 if [ ! -f "$DEST/mcp.json" ]; then
   cp "$SRC/mcp.json" "$DEST/mcp.json"
-  echo "Seeded mcp.json (uses \${RAPIDAPI_KEY}). Set that env var, or edit"
+  echo "Seeded mcp.json — anonymous, no key needed."
   echo "  $DEST/mcp.json"
-  echo "with your RapidAPI key so the MCP server can authenticate."
 fi
 
 rsync -a --delete \
@@ -43,3 +47,17 @@ rsync -a --delete \
 echo "Synced: $SRC"
 echo "    -> $DEST  (mcp.json left untouched)"
 echo "Reload Cursor to pick up changes: Cmd+Shift+P → 'Developer: Reload Window'."
+
+# Cursor launched from the Dock inherits no shell environment — its PATH is
+# /usr/bin:/bin:/usr/sbin:/sbin. If node came from a version manager or a custom
+# prefix, "command": "npx" fails with "spawn npx ENOENT" and the agent silently
+# falls back to the REST skill, so the error looks like an API problem. Warn early.
+if ! PATH=/usr/bin:/bin:/usr/sbin:/sbin command -v npx >/dev/null 2>&1; then
+  NODE_BIN="$(dirname "$(command -v node 2>/dev/null || echo /nonexistent)")"
+  echo
+  echo "WARNING: npx is not on Cursor's PATH (/usr/bin:/bin:/usr/sbin:/sbin)."
+  echo "Cursor will fail with 'spawn npx ENOENT' and fall back to REST."
+  echo "To test the MCP path, add an env block to $DEST/mcp.json:"
+  echo "    \"env\": { \"PATH\": \"$NODE_BIN:/usr/bin:/bin:/usr/sbin:/sbin\" }"
+  echo "Local fix only — do not commit it. See README 'Troubleshooting'."
+fi

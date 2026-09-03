@@ -67,6 +67,59 @@ Once installed, ask Cursor's agent things like:
 - *Has `10.1016/S0140-6736(97)11096-0` been retracted?*
 - *Is there a free open-access copy of `10.1371/journal.pone.0173664`?*
 
+## Troubleshooting
+
+### The agent answers with `curl` instead of the MCP tools, or reports a 403
+
+Symptom: you ask for a citation, the agent says it "ran N commands", and you get a network
+error such as `CONNECT tunnel failed, HTTP 403` — or no citation at all.
+
+That 403 is **not** an authentication failure and does not come from the Scholar Sidekick
+API. It means the MCP server never started, so the agent silently fell back to the keyless
+REST skill and the error came from whatever `curl` hit on the way out.
+
+Check the real cause in Cursor's own MCP log:
+
+```bash
+ls -t ~/Library/Application\ Support/Cursor/logs/*/window*/exthost/anysphere.cursor-mcp/MCP\ plugin-scholar-sidekick-*.log \
+  | head -1 | xargs cat
+```
+
+If it says `spawn npx ENOENT`, Cursor cannot find `npx`. Cursor launched from the Dock
+inherits no shell environment — its `PATH` is `/usr/bin:/bin:/usr/sbin:/sbin`. A Node
+installed by a version manager (nvm, fnm, volta, asdf) or under a custom prefix is
+invisible to it, even though `npx` works fine in your terminal.
+
+Fix it by giving the server a `PATH` in your **local** `~/.cursor/plugins/local/scholar-sidekick/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "scholar-sidekick": {
+      "command": "npx",
+      "args": ["-y", "scholar-sidekick-mcp@latest"],
+      "env": { "PATH": "/path/to/your/node/bin:/usr/bin:/bin:/usr/sbin:/sbin" }
+    }
+  }
+}
+```
+
+Get the directory with `dirname "$(command -v node)"`. Reload the window afterwards.
+
+> An absolute path to `npx` alone is **not** enough. `npx` is a script with a
+> `#!/usr/bin/env node` shebang, so it needs `node` on `PATH` too — and so does the bin
+> script that `npx` then spawns. Setting `env.PATH` is what fixes all three layers.
+
+This is a machine-specific workaround. Keep it in your local copy; it must not be
+committed, because the published config has to work on everyone's machine.
+
+### Every call fails with 403, and the log shows no error
+
+Check your local `mcp.json` for a leftover `env` block. An unexpanded `${RAPIDAPI_KEY}`
+placeholder is not empty — the server reads it as a real key, routes through the RapidAPI
+gateway, and 403s every request without ever falling back to anonymous. Delete the file and
+re-run `./scripts/sync-local.sh` to reseed it.
+
 ## Releasing
 
 See [RELEASE.md](RELEASE.md). Note that publishing is **not** just `git push`: the Cursor
