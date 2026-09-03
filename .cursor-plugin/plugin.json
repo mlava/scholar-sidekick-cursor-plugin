@@ -1,7 +1,7 @@
 {
   "name": "scholar-sidekick",
   "description": "Resolve, format, export, and verify academic citations (DOI incl. shortDOI aliases, PMID, PMCID, ISBN, ISSN, arXiv, ADS, WHO IRIS) — plus retraction and open-access checks.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": {
     "name": "Scholar Sidekick",
     "email": "support@scholar-sidekick.com"
@@ -19,7 +19,8 @@
     "csl",
     "retraction",
     "open-access",
-    "research"
+    "research",
+    "verify"
   ],
   "logo": "assets/logo.png",
   "mcpServers": "mcp.json",
