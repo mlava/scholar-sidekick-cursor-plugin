@@ -65,8 +65,10 @@ dashboard:
 
 ## 5. Record it
 
-Add the release to `docs/outreach/MENTIONS.md` in the main repo only if the listing itself
-changed materially (new capability, corrected claim) — routine version bumps do not need it.
+If the listing itself changed materially (new capability, corrected claim), record it in the
+`directory_submissions` memory — **not** `docs/outreach/MENTIONS.md`. That ledger is strictly
+"things others said about us" and explicitly excludes our own directory submissions; this
+listing is one we maintain by hand. Routine version bumps need no record at all.
 
 ---
 
