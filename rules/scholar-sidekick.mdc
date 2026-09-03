@@ -57,4 +57,21 @@ and returns a verdict (`matched` / `mismatch` / `ambiguous` / `not_found`).
 - **Never fabricate a fallback.** If a call fails or returns `ok: false`, report that — do
   not invent a citation, a retraction status, an OA verdict, or a "matched" verdict.
 
+## If the MCP tools are missing
+
+The REST fallback is the right move — the `scholar-sidekick-api` skill works with no
+key. But say plainly that you used it, and do not describe the reason as an API or
+authentication problem.
+
+A `curl` error such as `CONNECT tunnel failed`, a proxy 403, or a bare timeout means the
+request never reached Scholar Sidekick. Report it as a local network or setup problem, not
+as "the citation could not be verified" — those are different claims and only the second
+one is about the paper.
+
+If the MCP server is installed but its tools are absent, it failed to start. The usual
+cause is that the editor cannot find `npx`: launched from the Dock it inherits no shell
+environment, so a Node from a version manager is invisible to it. Point the user at the
+plugin README's Troubleshooting section rather than guessing. Never tell them to obtain
+an API key to fix it — both paths are anonymous, and a key fixes nothing here.
+
 Full agent guide: https://scholar-sidekick.com/AGENTS.md · index: https://scholar-sidekick.com/llms.txt
