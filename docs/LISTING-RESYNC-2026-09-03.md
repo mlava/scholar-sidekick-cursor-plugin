@@ -271,13 +271,13 @@ Read it in a real browser, or with headless Chromium.
 
 Check every one of these on the served page:
 
-- [ ] MCP config shows **no** `env` block and no `${RAPIDAPI_KEY}`
-- [ ] Tab header reads **Skills (8)**
-- [ ] `auditBibliography` appears (rule table + API skill tool list + its own skill)
-- [ ] `shortDOI` appears (description + rule)
-- [ ] `ssk_` appears (rule + API skill)
-- [ ] No text anywhere claims the MCP server needs a key
-- [ ] The `verify` keyword survived
+- [x] MCP config shows **no** `env` block and no `${RAPIDAPI_KEY}`
+- [x] Tab header reads **Skills (8)**
+- [x] `auditBibliography` appears (rule table + API skill tool list + its own skill)
+- [x] `shortDOI` appears (description + rule)
+- [x] `ssk_` appears (rule + API skill)
+- [x] No text anywhere claims the MCP server needs a key
+- [x] The `verify` keyword survived
 
 Then confirm the install actually works, per `RELEASE.md` step 2 — with **no**
 `SCHOLAR_API_KEY` or `RAPIDAPI_KEY` in your shell. A key in the environment hides exactly
